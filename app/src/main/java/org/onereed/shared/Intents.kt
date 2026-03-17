@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "RedundantSuppression")
 
 package org.onereed.shared
 
