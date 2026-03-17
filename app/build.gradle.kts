@@ -15,6 +15,8 @@ android {
       isMinifyEnabled = false
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
+
+    create("staging") {}
   }
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_11
