@@ -20,6 +20,13 @@ dependencyResolutionManagement {
     google()
     mavenCentral()
   }
+
+  versionCatalogs {
+    // Name this something unique for your submodule
+    create("sharedLibs") {
+      from(files("gradle/libs.versions.toml"))
+    }
+  }
 }
 
 rootProject.name = "Shared"
