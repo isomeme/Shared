@@ -1,4 +1,4 @@
-plugins { alias(libs.plugins.android.library) }
+plugins { alias(sharedLibs.plugins.androidLibrary) }
 
 android {
   namespace = "org.onereed.shared"
@@ -23,10 +23,10 @@ android {
 }
 
 dependencies {
-  implementation(libs.androidx.core.ktx)
-  implementation(libs.androidx.appcompat)
-  implementation(libs.material)
-  testImplementation(libs.junit)
-  androidTestImplementation(libs.androidx.junit)
-  androidTestImplementation(libs.androidx.espresso.core)
+  implementation(sharedLibs.androidx.core.ktx)
+  implementation(sharedLibs.androidx.appcompat)
+  implementation(sharedLibs.material)
+  testImplementation(sharedLibs.junit)
+  androidTestImplementation(sharedLibs.androidx.junit)
+  androidTestImplementation(sharedLibs.androidx.espresso.core)
 }
