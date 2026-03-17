@@ -1,5 +1,5 @@
 [versions]
-agp = "9.1.0"
+# agp = "9.1.0"
 coreKtx = "1.18.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
@@ -16,4 +16,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
-androidLibrary = { id = "com.android.library", version.ref = "agp" }
+androidLibrary = { id = "com.android.library" } # , version.ref = "agp" }
+
+# Uncomment version 'agp' and plugin 'androidLibrary' version.ref when building standalone. Restore
+# comments before committing so that the GitHub state is always consistent.
