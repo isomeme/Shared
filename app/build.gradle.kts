@@ -1,4 +1,7 @@
-plugins { alias(sharedLibs.plugins.androidLibrary) }
+plugins {
+  alias(sharedLibs.plugins.androidLibrary)
+  alias(sharedLibs.plugins.kotlinComposePlugin)
+}
 
 android {
   namespace = "org.onereed.shared"
@@ -18,13 +21,26 @@ android {
 
     create("staging") {}
   }
+
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    isCoreLibraryDesugaringEnabled = true
+  }
+
+  buildFeatures {
+    buildConfig = true
+    compose = true
   }
 }
 
 dependencies {
+
+  // Required for Java 8+ APIs on API levels < 33
+
+  coreLibraryDesugaring(sharedLibs.desugarLib)
+
+  implementation(sharedLibs.composeRuntimeLib)
   implementation(sharedLibs.androidx.core.ktx)
   implementation(sharedLibs.androidx.appcompat)
   implementation(sharedLibs.material)
