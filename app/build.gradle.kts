@@ -2,7 +2,7 @@ plugins { alias(sharedLibs.plugins.androidLibrary) }
 
 android {
   namespace = "org.onereed.shared"
-  compileSdk { version = release(36) { minorApiLevel = 1 } }
+  compileSdk { version = release(37) { minorApiLevel = 1 } }
 
   defaultConfig {
     minSdk = 26
@@ -19,8 +19,8 @@ android {
     create("staging") {}
   }
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
 }
 
