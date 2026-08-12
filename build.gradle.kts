@@ -1,4 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
     alias(sharedLibs.plugins.androidLibrary) apply false
+    alias(sharedLibs.plugins.kotlinComposePlugin) apply false
 }
