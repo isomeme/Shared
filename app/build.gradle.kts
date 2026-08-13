@@ -5,6 +5,8 @@ plugins {
 
 android {
   namespace = "org.onereed.shared"
+  group = "org.onereed.shared"
+  version = "1.0"
   compileSdk { version = release(37) { minorApiLevel = 1 } }
 
   defaultConfig {
