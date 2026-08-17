@@ -42,10 +42,14 @@ dependencies {
 
   coreLibraryDesugaring(sharedLibs.desugarLib)
 
+  implementation(sharedLibs.accompanistPermissions)
   implementation(sharedLibs.composeRuntimeLib)
   implementation(sharedLibs.androidx.core.ktx)
   implementation(sharedLibs.androidx.appcompat)
+  implementation(sharedLibs.gmsTasks)
+  implementation(sharedLibs.guavaLib)
   implementation(sharedLibs.material)
+  implementation(sharedLibs.timber)
   testImplementation(sharedLibs.junit)
   androidTestImplementation(sharedLibs.androidx.junit)
   androidTestImplementation(sharedLibs.androidx.espresso.core)
