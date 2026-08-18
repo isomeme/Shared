@@ -1,7 +1,9 @@
 [versions]
 accompanistPermissions = "0.37.3"
+activityComposeVersion = "1.13.0"
 agp = "9.3.1"
 appcompat = "1.8.0"
+composeBomVersion = "2026.08.00"
 composeRuntimeVersion = "1.12.0"
 coreKtx = "1.19.0"
 desugarVersion = "2.1.5"
@@ -16,6 +18,7 @@ timber = "5.0.1"
 
 [libraries]
 accompanistPermissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
+activityComposeLib = { module = "androidx.activity:activity-compose", version.ref = "activityComposeVersion" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -27,6 +30,9 @@ guavaLib = { module = "com.google.guava:guava", version.ref = "guavaVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+
+composeBomLib = { module = "androidx.compose:compose-bom", version.ref = "composeBomVersion" }
+material3Lib = { module = "androidx.compose.material3:material3" }
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }

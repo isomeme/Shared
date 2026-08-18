@@ -2,17 +2,17 @@
 
 package org.onereed.shared.navigation
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 
-fun Activity.openSettings() {
+fun Context.openSettings() {
   startActivity(settingsIntent())
 }
 
 fun Context.settingsIntent(): Intent =
   Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
     data = Uri.fromParts("package", packageName, /* fragment= */ null)
+    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
   }

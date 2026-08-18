@@ -42,13 +42,22 @@ dependencies {
 
   coreLibraryDesugaring(sharedLibs.desugarLib)
 
+  // Compose BOM
+  // See https://www.reddit.com/r/AndroidStudio/comments/1vnjxv4/comment/p3mmorh/
+  @Suppress("AvoidDuplicateDependencies")
+  implementation(platform(libs.composeBomLib))
+  @Suppress("AvoidDuplicateDependencies")
+  androidTestImplementation(platform(libs.composeBomLib))
+
   implementation(sharedLibs.accompanistPermissions)
+  implementation(sharedLibs.activityComposeLib)
   implementation(sharedLibs.composeRuntimeLib)
   implementation(sharedLibs.androidx.core.ktx)
   implementation(sharedLibs.androidx.appcompat)
   implementation(sharedLibs.gmsTasks)
   implementation(sharedLibs.guavaLib)
   implementation(sharedLibs.material)
+  implementation(sharedLibs.material3Lib)
   implementation(sharedLibs.timber)
   testImplementation(sharedLibs.junit)
   androidTestImplementation(sharedLibs.androidx.junit)
