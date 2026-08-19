@@ -45,9 +45,9 @@ dependencies {
   // Compose BOM
   // See https://www.reddit.com/r/AndroidStudio/comments/1vnjxv4/comment/p3mmorh/
   @Suppress("AvoidDuplicateDependencies")
-  implementation(platform(libs.composeBomLib))
+  implementation(platform(sharedLibs.composeBomLib))
   @Suppress("AvoidDuplicateDependencies")
-  androidTestImplementation(platform(libs.composeBomLib))
+  androidTestImplementation(platform(sharedLibs.composeBomLib))
 
   implementation(sharedLibs.accompanistPermissions)
   implementation(sharedLibs.activityComposeLib)

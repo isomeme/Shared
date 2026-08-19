@@ -23,6 +23,8 @@ import timber.log.Timber
 
 @Composable
 fun PermissionOrDie(permission: String) {
+  Timber.d("PermissionOrDie start")
+
   if (!needsPermission(permission)) {
     Timber.d("Permission not needed at this SDK version: $permission")
     return
@@ -97,9 +99,7 @@ fun PermissionOrDie(permission: String) {
       onDismissRequest = { showSettingsDialog = false },
       title = { Text("Permissions Blocked") },
       text = {
-        Text(
-          "We need a permission for this app to work. Please enable it in your system settings."
-        )
+        Text("We need a permission for this app to work. Please enable it in your system settings.")
       },
       confirmButton = {
         TextButton(
@@ -133,19 +133,21 @@ fun PermissionOrDie(permission: String) {
     }
   }
 
-  // Start the state machine on initial load
+  // Outer state machine
 
-  LaunchedEffect(Unit) {
-    val shouldShowRationale = activity.shouldShowRequestPermissionRationale(permission)
+  val shouldShowRationale = activity.shouldShowRequestPermissionRationale(permission)
 
-    if (shouldShowRationale) {
-      showRationaleDialog = true
-    } else if (hasRequestedPermission) {
-      // If they clicked again after a permanent denial, skip launcher and show settings dialog
-      // immediately
-      showSettingsDialog = true
-    } else {
+  if (shouldShowRationale) {
+    showRationaleDialog = true
+  } else if (hasRequestedPermission) {
+    // If they clicked again after a permanent denial, skip launcher and show settings dialog
+    // immediately
+    showSettingsDialog = true
+  } else {
+    LaunchedEffect(Unit) {
       launcher.launch(permission)
     }
   }
+
+  Timber.d("PermissionOrDie end")
 }
