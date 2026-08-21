@@ -33,6 +33,7 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 composeBomLib = { module = "androidx.compose:compose-bom", version.ref = "composeBomVersion" }
 material3Lib = { module = "androidx.compose.material3:material3" }
+uiToolingPreviewLib = { module = "androidx.compose.ui:ui-tooling-preview" }
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }

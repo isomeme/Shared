@@ -59,6 +59,7 @@ dependencies {
   implementation(sharedLibs.material)
   implementation(sharedLibs.material3Lib)
   implementation(sharedLibs.timber)
+  implementation(sharedLibs.uiToolingPreviewLib)
   testImplementation(sharedLibs.junit)
   androidTestImplementation(sharedLibs.androidx.junit)
   androidTestImplementation(sharedLibs.androidx.espresso.core)

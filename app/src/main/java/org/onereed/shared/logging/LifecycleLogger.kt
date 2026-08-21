@@ -9,6 +9,7 @@ import timber.log.Timber
 
 class LifecycleLogger : LifecycleEventObserver {
 
+
   override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
     val tag = getTag(source)
     val state = event.targetState
@@ -24,6 +25,8 @@ class LifecycleLogger : LifecycleEventObserver {
   }
 
   companion object {
+
+    fun Lifecycle.addLogger() = addObserver(LifecycleLogger())
 
     private data class SourceId(val className: String, val hashCode: Int) {
       constructor(source: LifecycleOwner) : this(source.javaClass.simpleName, source.hashCode())
