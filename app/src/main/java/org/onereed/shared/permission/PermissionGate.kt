@@ -1,8 +1,12 @@
 package org.onereed.shared.permission
 
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -13,6 +17,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +30,7 @@ import timber.log.Timber
 @Composable
 fun PermissionGate(
   permissions: List<String>,
+  allowCoarseLocation: Boolean = false,
   grantButtonLabel: String = "Grant required access",
   rationaleTitle: String = "Permission required",
   rationaleDescription: String =
@@ -35,16 +42,28 @@ fun PermissionGate(
   useSettingsOkButtonLabel: String = "Open settings",
   content: @Composable () -> Unit,
 ) {
+  require(
+    !permissions.contains(ACCESS_FINE_LOCATION) || permissions.contains(ACCESS_COARSE_LOCATION)
+  ) {
+    "ACCESS_COARSE_LOCATION must also be requested when ACCESS_FINE_LOCATION is requested."
+  }
+
   val context = LocalContext.current
   val activity = LocalActivity.current!!
 
-  val neededPermissions = neededPermissions(permissions)
+  val relevantPermissions = onlyRelevantPermissions(permissions)
+  val requiredPermissions =
+    if (allowCoarseLocation) {
+      relevantPermissions - ACCESS_FINE_LOCATION
+    } else {
+      relevantPermissions
+    }
 
   // Initial State: Check if needed permissions are already granted
 
   var allGranted by
-    remember(neededPermissions) {
-      mutableStateOf(context.hasAllPermissions(neededPermissions))
+    remember(requiredPermissions) {
+      mutableStateOf(context.allPermissionsGranted(requiredPermissions))
     }
 
   var showRationaleDialog by remember { mutableStateOf(false) }
@@ -61,7 +80,7 @@ fun PermissionGate(
   // Automatically re-check permissions when coming back from app background/settings
 
   LifecycleResumeEffect(Unit) {
-    val currentStatus = context.hasAllPermissions(neededPermissions)
+    val currentStatus = context.allPermissionsGranted(requiredPermissions)
     allGranted = currentStatus
 
     if (currentStatus) {
@@ -83,12 +102,12 @@ fun PermissionGate(
     rememberLauncherForActivityResult(
       contract = ActivityResultContracts.RequestMultiplePermissions()
     ) { resultMap ->
-      val allSuccessful = resultMap.values.all { it }
-      allGranted = allSuccessful
+      val permissionsGranted = resultMap.filterValues { it }.keys
+      val requiredDenied = requiredPermissions - permissionsGranted
+      allGranted = requiredDenied.isEmpty()
 
-      if (!allSuccessful) {
-        val deniedPermissions = resultMap.filterValues { !it }.keys
-        val shouldShowRationale = activity.anyShouldShowRationale(deniedPermissions)
+      if (!requiredDenied.isEmpty()) {
+        val shouldShowRationale = activity.anyShouldShowRationale(requiredDenied)
 
         if (shouldShowRationale) {
           showRationaleDialog = true
@@ -111,7 +130,7 @@ fun PermissionGate(
       title = rationaleTitle,
       description = rationaleDescription,
       okButtonLabel = rationaleOkButtonLabel,
-      onConfirm = { permissionLauncher.launch(neededPermissions.toTypedArray()) },
+      onConfirm = { permissionLauncher.launch(relevantPermissions.toTypedArray()) },
       onDone = { showRationaleDialog = false },
     )
   } else if (showUseSettingsDialog) {
@@ -126,10 +145,10 @@ fun PermissionGate(
     StatelessGrantPermissionScreen(
       grantButtonLabel = grantButtonLabel,
       onGrant = {
-        if (activity.anyShouldShowRationale(neededPermissions)) {
+        if (activity.anyShouldShowRationale(relevantPermissions)) {
           showRationaleDialog = true
         } else {
-          permissionLauncher.launch(neededPermissions.toTypedArray())
+          permissionLauncher.launch(relevantPermissions.toTypedArray())
         }
       },
     )
@@ -171,8 +190,10 @@ private fun StatelessGrantPermissionScreen(
   grantButtonLabel: String,
   onGrant: () -> Unit,
 ) {
-  Button(onClick = onGrant) {
-    Text(grantButtonLabel)
+  Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Button(onClick = onGrant) {
+      Text(grantButtonLabel)
+    }
   }
 }
 
