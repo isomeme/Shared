@@ -9,7 +9,7 @@ coreKtx = "1.19.0"
 desugarVersion = "2.1.5"
 espressoCore = "3.7.0"
 gmsTasksVersion = "18.4.1"
-guavaVersion = "33.6.0-android"
+guavaVersion = "33.7.1-android"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 kotlinComposePluginVersion = "2.4.10"
@@ -34,6 +34,7 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 composeBomLib = { module = "androidx.compose:compose-bom", version.ref = "composeBomVersion" }
 material3Lib = { module = "androidx.compose.material3:material3" }
 uiToolingPreviewLib = { module = "androidx.compose.ui:ui-tooling-preview" }
+uiToolingLib = { module = "androidx.compose.ui:ui-tooling" }
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }

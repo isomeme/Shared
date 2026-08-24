@@ -3,8 +3,6 @@ package org.onereed.shared.permission
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -15,12 +13,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import org.onereed.shared.navigation.settingsIntent
+import org.onereed.shared.screen.BasicFrame
 import timber.log.Timber
 
 @Composable
@@ -109,63 +107,83 @@ fun PermissionGate(
   // Layout rendering
 
   if (showRationaleDialog) {
-    AlertDialog(
-      onDismissRequest = { showRationaleDialog = false },
-      title = { Text(rationaleTitle) },
-      text = { Text(rationaleDescription) },
-      confirmButton = {
-        TextButton(
-          onClick = {
-            showRationaleDialog = false
-            permissionLauncher.launch(neededPermissions.toTypedArray())
-          }
-        ) {
-          Text(rationaleOkButtonLabel)
-        }
-      },
-      dismissButton = {
-        TextButton(onClick = { showRationaleDialog = false }) {
-          Text(stringResource(android.R.string.cancel))
-        }
-      },
+    StatelessPermissionDialog(
+      title = rationaleTitle,
+      description = rationaleDescription,
+      okButtonLabel = rationaleOkButtonLabel,
+      onConfirm = { permissionLauncher.launch(neededPermissions.toTypedArray()) },
+      onDone = { showRationaleDialog = false },
     )
   } else if (showUseSettingsDialog) {
-    AlertDialog(
-      onDismissRequest = { showUseSettingsDialog = false },
-      title = { Text(useSettingsTitle) },
-      text = { Text(useSettingsDescription) },
-      confirmButton = {
-        TextButton(
-          onClick = {
-            showUseSettingsDialog = false
-            settingsLauncher.launch(context.settingsIntent())
-          }
-        ) {
-          Text(useSettingsOkButtonLabel)
-        }
-      },
-      dismissButton = {
-        TextButton(onClick = { showUseSettingsDialog = false }) {
-          Text(stringResource(android.R.string.cancel))
+    StatelessPermissionDialog(
+      title = useSettingsTitle,
+      description = useSettingsDescription,
+      okButtonLabel = useSettingsOkButtonLabel,
+      onConfirm = { settingsLauncher.launch(context.settingsIntent()) },
+      onDone = { showUseSettingsDialog = false },
+    )
+  } else {
+    StatelessGrantPermissionScreen(
+      grantButtonLabel = grantButtonLabel,
+      onGrant = {
+        if (activity.anyShouldShowRationale(neededPermissions)) {
+          showRationaleDialog = true
+        } else {
+          permissionLauncher.launch(neededPermissions.toTypedArray())
         }
       },
     )
-  } else {
-    Box(
-      modifier = Modifier.fillMaxSize(),
-      contentAlignment = Alignment.Center,
-    ) {
-      Button(
+  }
+}
+
+@Composable
+private fun StatelessPermissionDialog(
+  title: String,
+  description: String,
+  okButtonLabel: String,
+  onConfirm: () -> Unit,
+  onDone: () -> Unit,
+) {
+  AlertDialog(
+    onDismissRequest = onDone,
+    title = { Text(title) },
+    text = { Text(description) },
+    confirmButton = {
+      TextButton(
         onClick = {
-          if (activity.anyShouldShowRationale(neededPermissions)) {
-            showRationaleDialog = true
-          } else {
-            permissionLauncher.launch(neededPermissions.toTypedArray())
-          }
+          onDone()
+          onConfirm()
         }
       ) {
-        Text(grantButtonLabel)
+        Text(okButtonLabel)
       }
-    }
+    },
+    dismissButton = {
+      TextButton(onClick = onDone) {
+        Text(stringResource(android.R.string.cancel))
+      }
+    },
+  )
+}
+
+@Composable
+private fun StatelessGrantPermissionScreen(
+  grantButtonLabel: String,
+  onGrant: () -> Unit,
+) {
+  Button(onClick = onGrant) {
+    Text(grantButtonLabel)
   }
+}
+
+@Composable
+@Preview
+fun StatelessPermissionDialogPreview() = BasicFrame {
+  StatelessPermissionDialog("Title", "Description", "OK", {}, {})
+}
+
+@Composable
+@Preview
+fun StatelessGrantPermissionScreenPreview() = BasicFrame {
+  StatelessGrantPermissionScreen("Grant") {}
 }
