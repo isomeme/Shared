@@ -7,6 +7,7 @@ android {
   namespace = "org.onereed.shared"
   group = "org.onereed.shared"
   version = "1.0"
+
   compileSdk { version = release(37) { minorApiLevel = 1 } }
 
   defaultConfig {
@@ -59,9 +60,12 @@ dependencies {
   implementation(sharedLibs.material)
   implementation(sharedLibs.material3Lib)
   implementation(sharedLibs.timber)
+
   debugImplementation(sharedLibs.uiToolingPreviewLib)
   debugImplementation(sharedLibs.uiToolingLib)
+
   testImplementation(sharedLibs.junit)
+
   androidTestImplementation(sharedLibs.androidx.junit)
   androidTestImplementation(sharedLibs.androidx.espresso.core)
 }
