@@ -23,7 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.LifecycleResumeEffect
-import org.onereed.shared.navigation.settingsIntent
+import org.onereed.shared.navigation.systemSettingsIntent
 import org.onereed.shared.screen.BasicFrame
 import timber.log.Timber
 
@@ -138,7 +138,7 @@ fun PermissionGate(
       title = useSettingsTitle,
       description = useSettingsDescription,
       okButtonLabel = useSettingsOkButtonLabel,
-      onConfirm = { settingsLauncher.launch(context.settingsIntent()) },
+      onConfirm = { settingsLauncher.launch(context.systemSettingsIntent()) },
       onDone = { showUseSettingsDialog = false },
     )
   } else {
