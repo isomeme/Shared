@@ -24,7 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import org.onereed.shared.navigation.systemSettingsIntent
-import org.onereed.shared.screen.BasicFrame
+import org.onereed.shared.ui.BasicFrame
 import timber.log.Timber
 
 @Composable
@@ -35,11 +35,9 @@ fun PermissionGate(
   rationaleTitle: String = "Permission required",
   rationaleDescription: String =
     "This feature requires additional system access to function properly.",
-  rationaleOkButtonLabel: String = "Try again",
   useSettingsTitle: String = "Permission permanently denied",
   useSettingsDescription: String =
     "Access is blocked in system settings. Open settings to grant it manually.",
-  useSettingsOkButtonLabel: String = "Open settings",
   content: @Composable () -> Unit,
 ) {
   require(
@@ -129,7 +127,6 @@ fun PermissionGate(
     StatelessPermissionDialog(
       title = rationaleTitle,
       description = rationaleDescription,
-      okButtonLabel = rationaleOkButtonLabel,
       onConfirm = { permissionLauncher.launch(relevantPermissions.toTypedArray()) },
       onDone = { showRationaleDialog = false },
     )
@@ -137,7 +134,6 @@ fun PermissionGate(
     StatelessPermissionDialog(
       title = useSettingsTitle,
       description = useSettingsDescription,
-      okButtonLabel = useSettingsOkButtonLabel,
       onConfirm = { settingsLauncher.launch(context.systemSettingsIntent()) },
       onDone = { showUseSettingsDialog = false },
     )
@@ -159,9 +155,8 @@ fun PermissionGate(
 private fun StatelessPermissionDialog(
   title: String,
   description: String,
-  okButtonLabel: String,
-  onConfirm: () -> Unit,
-  onDone: () -> Unit,
+  onConfirm: () -> Unit = {},
+  onDone: () -> Unit = {},
 ) {
   AlertDialog(
     onDismissRequest = onDone,
@@ -174,7 +169,7 @@ private fun StatelessPermissionDialog(
           onConfirm()
         }
       ) {
-        Text(okButtonLabel)
+        Text(stringResource(android.R.string.ok))
       }
     },
     dismissButton = {
@@ -200,7 +195,7 @@ private fun StatelessGrantPermissionScreen(
 @Composable
 @Preview
 fun StatelessPermissionDialogPreview() = BasicFrame {
-  StatelessPermissionDialog("Title", "Description", "OK", {}, {})
+  StatelessPermissionDialog("Title", "Description")
 }
 
 @Composable

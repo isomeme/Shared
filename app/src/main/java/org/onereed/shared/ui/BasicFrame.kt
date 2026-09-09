@@ -1,4 +1,4 @@
-package org.onereed.shared.screen
+package org.onereed.shared.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope

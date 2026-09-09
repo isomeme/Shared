@@ -1,7 +1,7 @@
 [versions]
 accompanistPermissions = "0.37.3"
 activityComposeVersion = "1.13.0"
-agp = "9.3.2"
+agp = "9.4.0"
 appcompat = "1.8.0"
 composeBomVersion = "2026.08.00"
 composeRuntimeVersion = "1.12.0"
@@ -12,7 +12,7 @@ gmsTasksVersion = "18.4.1"
 guavaVersion = "33.7.1-android"
 junit = "4.13.2"
 junitVersion = "1.3.0"
-kotlinComposePluginVersion = "2.4.10"
+kotlinComposePluginVersion = "2.4.20"
 material = "1.14.0"
 timber = "5.0.1"
 
