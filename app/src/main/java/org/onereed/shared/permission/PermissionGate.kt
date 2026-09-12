@@ -61,7 +61,7 @@ fun PermissionGate(
 
   var allGranted by
     remember(requiredPermissions) {
-      mutableStateOf(context.allPermissionsGranted(requiredPermissions))
+      mutableStateOf(context.hasAllExplicitPermissions(requiredPermissions))
     }
 
   var showRationaleDialog by remember { mutableStateOf(false) }
@@ -78,7 +78,7 @@ fun PermissionGate(
   // Automatically re-check permissions when coming back from app background/settings
 
   LifecycleResumeEffect(Unit) {
-    val currentStatus = context.allPermissionsGranted(requiredPermissions)
+    val currentStatus = context.hasAllExplicitPermissions(requiredPermissions)
     allGranted = currentStatus
 
     if (currentStatus) {

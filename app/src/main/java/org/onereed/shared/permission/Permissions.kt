@@ -37,27 +37,28 @@ fun onlyRelevantPermissions(permissions: Collection<String>): Set<String> =
     .toSet()
 
 /**
- * Returns true if [permission] is granted. Must not be called for permissions that are not relevant
- * at the current SDK level (see [isPermissionRelevant]).
+ * Returns true if [permission] has been explicitly granted by the user. Must not be called for
+ * permissions that are not relevant at the current SDK level (see [isPermissionRelevant]).
  */
-fun Context.isPermissionGranted(permission: String): Boolean =
+fun Context.hasExplicitPermission(permission: String): Boolean =
   checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
 
 /**
- * Returns true if all [permissions] are granted. Must not be called for permissions that are not
- * relevant at the current SDK level (see [isPermissionRelevant]).
+ * Returns true if all [permissions] have been explicitly granted by the user. Must not be called
+ * for permissions that are not relevant at the current SDK level (see [isPermissionRelevant]).
  */
-fun Context.allPermissionsGranted(permissions: Collection<String>): Boolean = permissions.all {
-  isPermissionGranted(it)
-}
+fun Context.hasAllExplicitPermissions(permissions: Collection<String>): Boolean =
+  permissions.all {
+    hasExplicitPermission(it)
+  }
 
 /**
  * Returns true if the capability represented by [permission] is available. This is true if either
- * the permission does not exist at the current SDK level, or the permission has been granted by the
- * user.
+ * the permission does not exist at the current SDK level, or the permission has been explicitly
+ * granted by the user.
  */
-fun Context.hasCapability(permission: String): Boolean =
-  !isPermissionRelevant(permission) || isPermissionGranted(permission)
+fun Context.hasPermission(permission: String): Boolean =
+  !isPermissionRelevant(permission) || hasExplicitPermission(permission)
 
 /**
  * Returns true if any [permissions] indicate that the user should be shown a rationale before

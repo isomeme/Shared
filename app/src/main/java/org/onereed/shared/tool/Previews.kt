@@ -9,4 +9,4 @@ annotation class DarkPreview
 @Preview(name = "Light mode", uiMode = Configuration.UI_MODE_NIGHT_NO, showBackground = true)
 annotation class LightPreview
 
-@DarkPreview @LightPreview annotation class ThemePreviews
+@DarkPreview @LightPreview @SharedApi annotation class ThemePreviews
